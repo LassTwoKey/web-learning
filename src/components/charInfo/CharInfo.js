@@ -1,60 +1,37 @@
 import './charInfo.scss';
-import { Component } from 'react';
+import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import MarvelService from '../../services/MarvelService';
+import useMarvelService from '../../services/MarvelService';
 import Spiner from '../Spiner/Spiner';
 import ErrorMessage from '../error/Error';
 import Skeleton from '../skeleton/Skeleton'
+import { Link } from 'react-router-dom'
 
-class CharInfo extends Component {
-    state = {
-        char: null,
-        loading: false,
-        error: false,
-    }
-    marvelService = new MarvelService;
+const CharInfo = (props) =>  {
+    const [char,setChar] = useState(null);
+    
 
-    onCharLoaded = (char) => {
-        this.setState({ char, loading: false, })
+   const  onCharLoaded = (char) => {
+        setChar(char)
     }
 
-    onCharLoading = () => {
-        this.setState({ loading: true, error: false })
-    }
+    const {loading,clearError,getCharacters,error} = useMarvelService();
 
-    onError = () => {
-        this.setState({ loading: false, error: true })
-    }
 
-    componentDidMount() {
-        this.updateChar()
-    }
+    useEffect(() => {
+       updateChar()
+    },[props.charId])
 
-    componentDidUpdate(prevProps){
-        const { charId } = this.props;
-       if(charId !== prevProps.charId){
-        this.updateChar()
-       }
-    }
 
-    updateChar = () => {
-        const { charId } = this.props;
+   const updateChar = () => {
+        const { charId } = props;
         if (!charId) {
             return;
         }
-
-        this.onCharLoading();
-        this.marvelService
-            .getCharacters(charId)
-            .then(this.onCharLoaded)
-            .catch(this.onError)
+         clearError()
+            getCharacters(charId)
+            .then(onCharLoaded)
     }
-    
-    
-
-
-    render() {
-        let {char,loading,error} = this.state;
         const skeleton = char || loading || error ? null : <Skeleton/>
         const errorMessage = error ? <ErrorMessage/> : null;
         const spinerElement = loading ? <Spiner/> : null;
@@ -67,7 +44,6 @@ class CharInfo extends Component {
                 {content}
             </div>
         )
-    }
 }
 
 const View = ({ char }) => {
@@ -75,9 +51,9 @@ const View = ({ char }) => {
     const { name,description,thumbnail,wiki,homepage,comics} = char
     const comicsItems = comics.map((item,i) => {
         return (
-            <li key = {i} className="char__comics-item">
+            <Link to = {`/comics/${item.resourceURI.substring(43)}`}><li key = {i} className="char__comics-item">
                     {item.name}
-                 </li>
+                 </li></Link>
         )
     })  
     if (thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg') {
