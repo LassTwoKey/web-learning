@@ -1,6 +1,7 @@
 import './charList.scss';
 
 import { useState,useEffect,useRef} from 'react';
+import {AnimatePresence, motion} from 'framer-motion/dist/framer-motion'
 import ErrorMessage from '../error/Error';
 import PropTypes from 'prop-types';
 import useMarvelService from '../../services/MarvelService';
@@ -20,6 +21,18 @@ const CharList = (props) => {
         onRequest(offset,true)
     },[])
    
+    const liVariants = {
+         visible:i => ({
+             opacity:1, 
+             y:300,
+             transform:'scale(1) translateX(0%)',
+             transition:{
+                duration:0.7,
+             }
+         }),
+         hidden:{opacity:0,transform:'scale(0.5) translateX(-100%)'},
+    }
+
 
    const  onCharLoad = (newChar) => {
         let ended= false;
@@ -61,7 +74,8 @@ const CharList = (props) => {
      itemsRef.current[id].classList.add('char__item_selected');
      itemsRef.current[id].focus()
    }
-        
+    
+ 
 
    function renderItems(arr) {
         const { onCharSelected } = props;
@@ -71,7 +85,11 @@ const CharList = (props) => {
                 imgStyle = { 'objectFit': 'unset' };
             }
             return (
-                <li 
+                <AnimatePresence >
+                <motion.li
+                initial = 'hidden'
+                animate = 'visible'
+                variants = {liVariants}
                 ref = {el => itemsRef.current[i] = el }  
                 onClick={() => {onCharSelected(item.id);focusOnItem(i)}}
                 onKeyPress={(e) => {
@@ -86,12 +104,13 @@ const CharList = (props) => {
 
                     <img src={item.thumbnail} alt={item.name} style={imgStyle}></img>
                     <div className='char__name'>{item.name}</div>
-                </li>
+                </motion.li>
+                </AnimatePresence>
             )
         })
         return (
             <ul className="char__grid">
-                {Charitems}
+                   {Charitems}
             </ul>
         )
     }

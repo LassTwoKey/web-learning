@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
-import './randomChar.scss';
+import {AnimatePresence, motion} from 'framer-motion/dist/framer-motion'
 import mjolnir from '../../resources/img/mjolnir.png';
 import useMarvelService from '../../services/MarvelService';
 import Spiner from '../Spiner/Spiner';
 import ErrorMessage from '../error/Error';
+import './randomChar.scss';
 
 
 const RandomChar = () => { 
@@ -25,11 +26,21 @@ const RandomChar = () => {
         updateChar()
     },[])
   
-   
+     const variantsAnimate = {
+         hidden:{opacity:0,x:-150},
+         animation:{
+            opacity:1,
+            x:0,
+            transition:{
+                duration:0.5,
+             }
+         },
+        
+     }
 
       const errorMessage = error ? <ErrorMessage/> : null;
       const spinerElement = loading ? <Spiner/> : null;
-      const content = !(loading || error )  ? <View char = {char}/> : null;
+      const content = !(loading || error )  ? <View variantsAnimate = {variantsAnimate} char = {char}/> : null;
      return (
         <>
         <div className="randomchar">
@@ -54,7 +65,7 @@ const RandomChar = () => {
     )
 }
 
-const View = ({char}) => {
+const View = ({char,variantsAnimate}) => {
     let {name,description,thumbnail,homepage,wiki} = char;
     let imgStyle = {'objectFit' : 'cover'};
     if (thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg') {
@@ -62,7 +73,11 @@ const View = ({char}) => {
     }
 
     return (
-        <div className="randomchar__block">
+        <motion.div 
+        initial = 'hidden'
+        animate = 'animation'
+        variants = {variantsAnimate}
+        className="randomchar__block">
         <img src= {thumbnail} alt="Random character" className= 'randomchar__img' style = {imgStyle}/>
         <div className="randomchar__info">
             <p className="randomchar__name">{name}</p>
@@ -78,7 +93,7 @@ const View = ({char}) => {
                 </a>
             </div>
         </div>
-    </div>
+    </motion.div>
     )
 }
 
