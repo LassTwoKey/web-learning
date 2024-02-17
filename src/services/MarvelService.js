@@ -21,6 +21,11 @@ const  useMarvelService = () =>{
          return _transformCharacter(res.data.results[0])
     }
 
+    const getCharacterByName  = async(name) => {
+      const res = await request(`${_ApiBase}characters?name=${name}&${_ApiKey}`)
+      return res.data.results.map(_transformCharacter)
+    }
+
    const  _transformCharacter = (char) => {
         return {
                 name:char.name,
@@ -33,6 +38,8 @@ const  useMarvelService = () =>{
                 activeChar: false,
         }
     }
+
+
 
     const getAllComics = async(offset = _baseOffsetForComics) => {
      const res = await request(`${_ApiBase}/comics?limit=8&offset=${offset}?&${_ApiKey}`);
@@ -55,7 +62,9 @@ const  useMarvelService = () =>{
              page:comics.pageCount ? comics.pageCount + 'p.' : 'No information about the number of pages'
          }
     }
-    return {loading,error,getAllCharacters,getCharacters,clearError,getAllComics,getComicById}
+
+    
+    return {loading,error,getAllCharacters,getCharacters,clearError,getAllComics,getComicById,getCharacterByName}
 }
 
 export default useMarvelService 
