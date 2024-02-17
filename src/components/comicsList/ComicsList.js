@@ -4,7 +4,7 @@ import './comicsList.scss';
 import ErrorMessage from '../error/Error';
 import Spiner from '../Spiner/Spiner';
 import { Link } from 'react-router-dom';
-
+import {AnimatePresence, motion} from 'framer-motion/dist/framer-motion'
 
 
 const ComicsList = () => {
@@ -46,7 +46,16 @@ const ComicsList = () => {
     function renderItems(arr) {
         const comicsListItem = comicsList.map((item, i) => {
             return (
-                <li
+                <motion.li
+                initial = {{
+                    transform:'scale(0.4) translateX(-100%)'
+                  }}
+                  animate = {{
+                    transform:'scale(1) translateY(0%)'
+                  }}
+                  transition = {{
+                     duration:0.3
+                  }} 
                     key={i}
                     tabIndex={0}
                     className="comics__item">
@@ -55,7 +64,7 @@ const ComicsList = () => {
                         <div className="comics__item-name">{item.title}</div>
                         <div className="comics__item-price">{item.price}</div>
                     </Link>
-                </li>
+                </motion.li>
             )
         })
         return (

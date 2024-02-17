@@ -63,7 +63,7 @@ const SearchPanel = () => {
                     className="button button__main">
                         <div className='inner'>Find</div>
                     </button>
-            <FormikErrorMessage component='div' className='char__search-error' name = 'charName'/>
+               <FormikErrorMessage component='div' className='char__search-error' name = 'charName'/>
                 </Form>
             </div>
             {ErrorMessages}

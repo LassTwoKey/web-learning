@@ -1,4 +1,5 @@
 import { useState } from "react";
+import {AnimatePresence, motion} from 'framer-motion/dist/framer-motion'
 import RandomChar from "../randomChar/RandomChar";
 import CharList from "../charList/CharList";
 import CharInfo from "../charInfo/CharInfo";
@@ -22,7 +23,19 @@ const MainPage = () => {
          <div className="app">
           <AppHeader/>
           <main>
-           <RandomChar/>
+            <motion.div
+            initial = {{
+                transform:'scale(0.5) translateX(100%)'
+            }}
+            animate = {{
+                transform:'scale(1) translateX(0%)'
+            }}
+            transition = {{
+                 duration:0.7
+            }}
+            className="random__char">
+            <RandomChar/>
+            </motion.div>
                 <div className="char__content">
                 <ErrorBoundary>
                     <CharList  onCharSelected = {onCharSelected}/>
