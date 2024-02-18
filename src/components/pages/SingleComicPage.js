@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 import AppHeader from '../appHeader/AppHeader';
 import useMarvelService from '../../services/MarvelService';
 import Spiner from '../Spiner/Spiner';
@@ -70,6 +71,13 @@ const View = ({ comic }) => {
     const { thumbnail, title, description, page, language, price } = comic;
     return (
         <>
+          <Helmet>
+          <meta
+                    name="description"
+                    content={`${title} comics book`}
+                />
+                <title>{`${title}`}</title>
+          </Helmet>
             <div className='app'>
                 <AppHeader />
             </div>

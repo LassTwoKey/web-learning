@@ -1,5 +1,6 @@
 import {useEffect, useState} from 'react'
 import {Link,useParams} from 'react-router-dom'
+import { Helmet } from 'react-helmet';
 import AppHeader from '../appHeader/AppHeader'
 import AppBanner from '../appBanner/AppBanner'
 import ErrorMessage from '../error/Error'
@@ -64,6 +65,13 @@ const NameAndDescrVariantsAnimation = {
     const {name,description,thumbnail} = character
      return (
         <>
+           <Helmet>
+                <meta
+                    name="description"
+                    content={`${name} character`}
+                />
+                <title>{name}</title>
+            </Helmet>
         <div className='app'>
         <AppHeader />
          </div>

@@ -1,11 +1,20 @@
 import AppHeader from '../appHeader/AppHeader'
+import { Helmet } from 'react-helmet'
 import AppBaner from '../appBanner/AppBanner'
+
 import ComicsList from '../comicsList/ComicsList'
 import {AnimatePresence, motion} from 'framer-motion/dist/framer-motion'
 
 const ComicsPage = () => {
     return (
         <>
+        <Helmet>
+        <meta
+      name="description"
+      content="Page with list of our comics"
+    />
+    <title>Comics Page</title>
+        </Helmet>
          <div className="app">
           <AppHeader/>
           <main>
